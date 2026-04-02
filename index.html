@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PataAmiga — Adote, Doe, Transforme</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FAF5EE;
+      --warm-white: #FFF8F0;
+      --caramel: #C4763A;
+      --caramel-light: #E8A86A;
+      --caramel-dark: #9A5220;
+      --bark: #3D2B1F;
+      --bark-mid: #6B4226;
+      --sage: #7A9E7E;
+      --sage-light: #A8C5AB;
+      --accent: #E85D3A;
+      --text: #2C1A0E;
+      --text-mid: #6B4B35;
+      --text-light: #A07850;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ===== NOISE TEXTURE OVERLAY ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(250, 245, 238, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196, 118, 58, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--caramel-dark);
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-mid);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .nav-links a:hover { color: var(--caramel); }
+
+    .btn-nav {
+      background: var(--caramel);
+      color: white !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 999px;
+      font-weight: 600 !important;
+      transition: background 0.2s, transform 0.15s !important;
+    }
+    .btn-nav:hover { background: var(--caramel-dark) !important; transform: translateY(-1px); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 7rem 4rem 4rem;
+      gap: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(196,118,58,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(196,118,58,0.12);
+      border: 1px solid rgba(196,118,58,0.25);
+      color: var(--caramel-dark);
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--bark);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--caramel);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--caramel);
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(196,118,58,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--caramel-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(196,118,58,0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--caramel-dark);
+      padding: 0.9rem 2rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 2px solid var(--caramel);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover {
+      background: var(--caramel);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--caramel);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Hero image grid */
+    .hero-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1rem;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .hero-img {
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .hero-img:hover img { transform: scale(1.04); }
+    .hero-img:nth-child(1) { height: 260px; }
+    .hero-img:nth-child(2) { height: 260px; margin-top: 2.5rem; }
+    .hero-img:nth-child(3) { height: 180px; grid-column: 1 / -1; }
+
+    .img-tag {
+      position: absolute;
+      bottom: 1rem; left: 1rem;
+      background: rgba(250,245,238,0.92);
+      backdrop-filter: blur(6px);
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--caramel-dark);
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .section {
+      padding: 6rem 4rem;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--caramel);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      color: var(--bark);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--text-mid);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .how-card {
+      background: var(--warm-white);
+      border: 1px solid rgba(196,118,58,0.12);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .how-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(60,30,10,0.08);
+    }
+
+    .how-num {
+      font-family: 'Fraunces', serif;
+      font-size: 4rem;
+      font-weight: 900;
+      color: rgba(196,118,58,0.12);
+      position: absolute;
+      top: 1.2rem; right: 1.5rem;
+      line-height: 1;
+    }
+
+    .how-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .how-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--bark);
+      margin-bottom: 0.7rem;
+    }
+    .how-card p {
+      color: var(--text-mid);
+      font-size: 0.95rem;
+      line-height: 1.65;
+    }
+
+    /* ===== DOGS FOR ADOPTION ===== */
+    .dogs-section {
+      background: var(--warm-white);
+      padding: 6rem 4rem;
+    }
+
+    .dogs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+
+    .dog-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .dog-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(196,118,58,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .dog-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 50px rgba(60,30,10,0.12);
+    }
+
+    .dog-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .dog-info {
+      padding: 1.2rem;
+    }
+    .dog-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--bark);
+      margin-bottom: 0.3rem;
+    }
+    .dog-breed {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-bottom: 0.8rem;
+    }
+
+    .dog-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .dog-tag {
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .tag-age { background: rgba(122,158,126,0.15); color: var(--sage); }
+    .tag-size { background: rgba(196,118,58,0.12); color: var(--caramel-dark); }
+    .tag-sex { background: rgba(232,93,58,0.1); color: var(--accent); }
+
+    .btn-adopt {
+      width: 100%;
+      padding: 0.65rem;
+      background: var(--caramel);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-adopt:hover { background: var(--caramel-dark); }
+
+    /* ===== CTA DONATION ===== */
+    .cta-donate {
+      padding: 6rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .cta-image-wrap {
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      height: 440px;
+    }
+    .cta-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cta-image-badge {
+      position: absolute;
+      bottom: 2rem; left: 2rem;
+      background: rgba(250,245,238,0.95);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .badge-icon { font-size: 2rem; }
+    .badge-text strong {
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      color: var(--bark);
+    }
+    .badge-text span { font-size: 0.82rem; color: var(--text-mid); }
+
+    .donate-form {
+      margin-top: 2rem;
+      background: var(--warm-white);
+      border: 1px solid rgba(196,118,58,0.15);
+      border-radius: 24px;
+      padding: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-mid);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: white;
+      border: 1.5px solid rgba(196,118,58,0.2);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--caramel);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group textarea { min-height: 90px; resize: vertical; }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials {
+      background: var(--bark);
+      padding: 6rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .testimonials::before {
+      content: '❤';
+      font-size: 18rem;
+      position: absolute;
+      right: -2rem; top: -3rem;
+      opacity: 0.04;
+      line-height: 1;
+    }
+
+    .testimonials .section-title { color: var(--cream); }
+    .testimonials .section-label { color: var(--caramel-light); }
+    .testimonials .section-sub { color: rgba(250,245,238,0.6); }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .testi-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: background 0.3s;
+    }
+    .testi-card:hover { background: rgba(255,255,255,0.08); }
+    .testi-stars { color: var(--caramel-light); font-size: 1rem; margin-bottom: 1rem; }
+    .testi-text {
+      color: rgba(250,245,238,0.85);
+      font-size: 0.97rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .testi-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--caramel);
+    }
+    .testi-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--cream);
+    }
+    .testi-loc {
+      font-size: 0.78rem;
+      color: rgba(250,245,238,0.45);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--bark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--cream);
+    }
+    .footer-logo span { color: var(--caramel-light); }
+    footer p {
+      color: rgba(250,245,238,0.4);
+      font-size: 0.85rem;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30,15,5,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal {
+      background: var(--cream);
+      border-radius: 28px;
+      padding: 2.5rem;
+      width: 90%;
+      max-width: 500px;
+      transform: translateY(20px);
+      transition: transform 0.3s;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-overlay.active .modal { transform: translateY(0); }
+    .modal h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--bark);
+      margin-bottom: 0.3rem;
+    }
+    .modal-sub { color: var(--text-mid); font-size: 0.9rem; margin-bottom: 1.8rem; }
+    .modal-close {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+      margin-top: -0.5rem;
+    }
+    .modal-dog-preview {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--warm-white);
+      border-radius: 16px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .modal-dog-preview img {
+      width: 70px; height: 70px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    /* ===== SUCCESS MESSAGE ===== */
+    .success-banner {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--sage);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      z-index: 1000;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    .success-banner.show { transform: translateX(-50%) translateY(0); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .dog-grid { grid-template-columns: repeat(2, 1fr); }
+      .how-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 2rem; }
+      .hero-visual { display: none; }
+      .section, .dogs-section, .testimonials { padding: 4rem 1.5rem; }
+      .how-grid { grid-template-columns: 1fr; }
+      .dog-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .cta-donate { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
+      .cta-image-wrap { height: 280px; }
+      .dogs-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">Pata<span>Amiga</span> 🐾</div>
+    <ul class="nav-links">
+      <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#adotar">Adotar</a></li>
+      <li><a href="#doe">Doe um Pet</a></li>
+      <li><a href="#doe" class="btn-nav">Começar agora</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🐶 Plataforma de Adoção</div>
+      <h1>Todo cão merece um lar <em>cheio de amor</em></h1>
+      <p class="hero-desc">
+        Conectamos pets que precisam de um lar com famílias que têm amor para dar.
+        Adote, doe ou ajude um cachorrinho a encontrar seu futuro dono.
+      </p>
+      <div class="hero-actions">
+        <a href="#adotar" class="btn-primary">🐾 Quero Adotar</a>
+        <a href="#doe" class="btn-outline">💛 Quero Doar</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <span class="stat-num">1.240</span>
+          <span class="stat-label">Adotados</span>
+        </div>
+        <div>
+          <span class="stat-num">380</span>
+          <span class="stat-label">Aguardando lar</span>
+        </div>
+        <div>
+          <span class="stat-num">98%</span>
+          <span class="stat-label">Satisfação</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&q=80" alt="Cachorro feliz" />
+        <span class="img-tag">✅ Disponível</span>
+      </div>
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80" alt="Labrador" />
+        <span class="img-tag">✅ Disponível</span>
+      </div>
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=600&q=80" alt="Golden retriever" />
+        <span class="img-tag">❤️ 14 curtidas</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section class="section" id="como-funciona">
+    <div class="fade-in">
+      <p class="section-label">Simples assim</p>
+      <h2 class="section-title">Como funciona<br/>a PataAmiga?</h2>
+      <p class="section-sub">Em poucos passos você pode transformar a vida de um bichinho — e a sua também.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card fade-in">
+        <span class="how-num">01</span>
+        <span class="how-icon">📋</span>
+        <h3>Cadastre-se</h3>
+        <p>Crie sua conta gratuitamente. Preencha seu perfil e nos conte um pouquinho sobre você e sua família.</p>
+      </div>
+      <div class="how-card fade-in">
+        <span class="how-num">02</span>
+        <span class="how-icon">🔍</span>
+        <h3>Encontre seu match</h3>
+        <p>Navegue pelos pets disponíveis, filtre por raça, idade, porte e temperamento. Cada cachorrinho tem uma história.</p>
+      </div>
+      <div class="how-card fade-in">
+        <span class="how-num">03</span>
+        <span class="how-icon">🏠</span>
+        <h3>Leve pra casa!</h3>
+        <p>Entre em contato com o doador, agende uma visita e, se der match, o bichinho vai pra um novo lar cheio de amor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÃES PARA ADOÇÃO -->
+  <section class="dogs-section" id="adotar">
+    <div class="dogs-header fade-in">
+      <div>
+        <p class="section-label">Esperando por você</p>
+        <h2 class="section-title">Pets disponíveis para adoção</h2>
+      </div>
+      <a href="#doe" class="btn-outline">Ver todos →</a>
+    </div>
+
+    <div class="dog-grid">
+      <!-- Dog 1 -->
+      <div class="dog-card fade-in" onclick="openModal('Bolinha', 'Vira-lata Caramelo', '2 anos', 'Médio', 'Macho', 'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=400&q=80')">
+        <img class="dog-img" src="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=400&q=80" alt="Bolinha" />
+        <div class="dog-info">
+          <div class="dog-name">Bolinha</div>
+          <div class="dog-breed">Vira-lata Caramelo</div>
+          <div class="dog-tags">
+            <span class="dog-tag tag-age">2 anos</span>
+            <span class="dog-tag tag-size">Médio</span>
+            <span class="dog-tag tag-sex">Macho</span>
+          </div>
+          <button class="btn-adopt">🐾 Quero Adotar</button>
+        </div>
+      </div>
+
+      <!-- Dog 2 -->
+      <div class="dog-card fade-in" onclick="openModal('Mel', 'Golden Retriever', '1 ano', 'Grande', 'Fêmea', 'https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=400&q=80')">
+        <img class="dog-img" src="https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=400&q=80" alt="Mel" />
+        <div class="dog-info">
+          <div class="dog-name">Mel</div>
+          <div class="dog-breed">Golden Retriever</div>
+          <div class="dog-tags">
+            <span class="dog-tag tag-age">1 ano</span>
+            <span class="dog-tag tag-size">Grande</span>
+            <span class="dog-tag tag-sex">Fêmea</span>
+          </div>
+          <button class="btn-adopt">🐾 Quero Adotar</button>
+        </div>
+      </div>
+
+      <!-- Dog 3 -->
+      <div class="dog-card fade-in" onclick="openModal('Thor', 'Labrador', '3 anos', 'Grande', 'Macho', 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80')">
+        <img class="dog-img" src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80" alt="Thor" />
+        <div class="dog-info">
+          <div class="dog-name">Thor</div>
+          <div class="dog-breed">Labrador</div>
+          <div class="dog-tags">
+            <span class="dog-tag tag-age">3 anos</span>
+            <span class="dog-tag tag-size">Grande</span>
+            <span class="dog-tag tag-sex">Macho</span>
+          </div>
+          <button class="btn-adopt">🐾 Quero Adotar</button>
+        </div>
+      </div>
+
+      <!-- Dog 4 -->
+      <div class="dog-card fade-in" onclick="openModal('Docinho', 'Poodle', '6 meses', 'Pequeno', 'Fêmea', 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&q=80')">
+        <img class="dog-img" src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&q=80" alt="Docinho" />
+        <div class="dog-info">
+          <div class="dog-name">Docinho</div>
+          <div class="dog-breed">Poodle</div>
+          <div class="dog-tags">
+            <span class="dog-tag tag-age">6 meses</span>
+            <span class="dog-tag tag-size">Pequeno</span>
+            <span class="dog-tag tag-sex">Fêmea</span>
+          </div>
+          <button class="btn-adopt">🐾 Quero Adotar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOE SEU PET -->
+  <section class="cta-donate" id="doe">
+    <div class="cta-image-wrap fade-in">
+      <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=80" alt="Cachorro feliz" />
+      <div class="cta-image-badge">
+        <span class="badge-icon">🏡</span>
+        <div class="badge-text">
+          <strong>+380 pets</strong>
+          <span>já encontraram um lar</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-in">
+      <p class="section-label">Precisando de ajuda?</p>
+      <h2 class="section-title">Não consegue cuidar do seu pet?</h2>
+      <p class="section-sub" style="margin-bottom: 0;">
+        Às vezes a vida muda e não é mais possível cuidar de um animal. Sem julgamentos — aqui você encontra um lar amoroso para ele.
+      </p>
+
+      <div class="donate-form">
+        <p style="font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 800; color: var(--bark); margin-bottom: 1.2rem;">
+          Cadastrar pet para adoção
+        </p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome do Pet</label>
+            <input type="text" placeholder="Ex: Rex" id="petName" />
+          </div>
+          <div class="form-group">
+            <label>Raça</label>
+            <input type="text" placeholder="Ex: Vira-lata" id="petBreed" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Idade</label>
+            <input type="text" placeholder="Ex: 2 anos" id="petAge" />
+          </div>
+          <div class="form-group">
+            <label>Porte</label>
+            <select id="petSize">
+              <option value="">Selecione</option>
+              <option>Pequeno</option>
+              <option>Médio</option>
+              <option>Grande</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Seu nome e contato</label>
+          <input type="text" placeholder="Nome — WhatsApp ou e-mail" id="ownerContact" />
+        </div>
+        <div class="form-group">
+          <label>Observações</label>
+          <textarea placeholder="Conte sobre o temperamento, saúde e motivo da doação..." id="petNotes"></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%; font-size:1rem;" onclick="submitDonation()">
+          💛 Cadastrar para Adoção
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="fade-in">
+      <p class="section-label">Histórias reais</p>
+      <h2 class="section-title">Quem adotou, amou 💛</h2>
+      <p class="section-sub">Veja o que dizem as famílias que transformaram suas vidas — e a dos pets.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Adotei a Mel há 6 meses e não imagino mais minha vida sem ela. O processo foi super simples e o suporte da equipe foi incrível do início ao fim."</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://i.pravatar.cc/80?img=47" alt="Ana Paula" />
+          <div>
+            <div class="testi-name">Ana Paula S.</div>
+            <div class="testi-loc">São Paulo, SP</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Precisei doar o Toby por causa de uma mudança e fiquei arrasado. A plataforma me ajudou a encontrar uma família linda pra ele. Sigo acompanhando pelas fotos!"</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://i.pravatar.cc/80?img=12" alt="Carlos" />
+          <div>
+            <div class="testi-name">Carlos M.</div>
+            <div class="testi-loc">Curitiba, PR</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-in">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Já adotei dois cachorros pela PataAmiga. É rápido, seguro e o suporte tira todas as dúvidas. Recomendo pra todo mundo que quiser dar uma chance a um bichinho."</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://i.pravatar.cc/80?img=32" alt="Fernanda" />
+          <div>
+            <div class="testi-name">Fernanda L.</div>
+            <div class="testi-loc">Belo Horizonte, MG</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Pata<span>Amiga</span> 🐾</div>
+    <p>© 2025 PataAmiga. Feito com amor por pets e pessoas.</p>
+    <p style="color: rgba(250,245,238,0.3);">Projeto Acadêmico — Computação em Nuvem</p>
+  </footer>
+
+  <!-- MODAL ADOÇÃO -->
+  <div class="modal-overlay" id="adoptModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h2>Solicitar Adoção</h2>
+      <p class="modal-sub" id="modalSub">Preencha seus dados para solicitar a adoção.</p>
+      <div class="modal-dog-preview">
+        <img id="modalDogImg" src="" alt="" />
+        <div>
+          <div style="font-family:'Fraunces',serif;font-weight:800;font-size:1rem;color:var(--bark)" id="modalDogName"></div>
+          <div style="font-size:0.82rem;color:var(--text-light)" id="modalDogInfo"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Seu nome completo</label>
+        <input type="text" placeholder="Ex: João da Silva" id="adopName" />
+      </div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" placeholder="seu@email.com" id="adopEmail" />
+      </div>
+      <div class="form-group">
+        <label>Telefone / WhatsApp</label>
+        <input type="text" placeholder="(11) 99999-0000" id="adopPhone" />
+      </div>
+      <div class="form-group">
+        <label>Por que quer adotar?</label>
+        <textarea placeholder="Conte um pouquinho sobre você e seu lar..." id="adopWhy"></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%;" onclick="submitAdoption()">
+        🐾 Enviar Solicitação
+      </button>
+    </div>
+  </div>
+
+  <!-- SUCCESS BANNER -->
+  <div class="success-banner" id="successBanner">✅ Solicitação enviada com sucesso!</div>
+
+  <script>
+    // ===== SCROLL ANIMATIONS =====
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          // Stagger children if how-grid or dog-grid
+          const cards = e.target.querySelectorAll ? [] : [];
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 4) * 0.1}s`;
+      observer.observe(el);
+    });
+
+    // ===== MODAL =====
+    function openModal(name, breed, age, size, sex, img) {
+      document.getElementById('modalDogName').textContent = name;
+      document.getElementById('modalDogInfo').textContent = `${breed} · ${age} · ${size} · ${sex}`;
+      document.getElementById('modalDogImg').src = img;
+      document.getElementById('modalSub').textContent = `Você está solicitando adoção de ${name}. Preencha seus dados e entraremos em contato.`;
+      document.getElementById('adoptModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('adoptModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('adoptModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    // ===== SUBMISSIONS =====
+    function showSuccess(msg) {
+      const b = document.getElementById('successBanner');
+      b.textContent = msg;
+      b.classList.add('show');
+      setTimeout(() => b.classList.remove('show'), 3500);
+    }
+
+    function submitAdoption() {
+      const name = document.getElementById('adopName').value.trim();
+      const email = document.getElementById('adopEmail').value.trim();
+      if (!name || !email) {
+        alert('Por favor, preencha seu nome e e-mail.');
+        return;
+      }
+      closeModal();
+      showSuccess('🐾 Solicitação enviada! Entraremos em contato em breve.');
+      document.getElementById('adopName').value = '';
+      document.getElementById('adopEmail').value = '';
+      document.getElementById('adopPhone').value = '';
+      document.getElementById('adopWhy').value = '';
+    }
+
+    function submitDonation() {
+      const name = document.getElementById('petName').value.trim();
+      const contact = document.getElementById('ownerContact').value.trim();
+      if (!name || !contact) {
+        alert('Por favor, preencha o nome do pet e seu contato.');
+        return;
+      }
+      showSuccess('💛 Pet cadastrado! Vamos encontrar um lar incrível pra ele.');
+      document.getElementById('petName').value = '';
+      document.getElementById('petBreed').value = '';
+      document.getElementById('petAge').value = '';
+      document.getElementById('petSize').value = '';
+      document.getElementById('ownerContact').value = '';
+      document.getElementById('petNotes').value = '';
+    }
+
+    // ===== NAVBAR SCROLL EFFECT =====
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.style.boxShadow = '0 4px 30px rgba(60,30,10,0.08)';
+      } else {
+        nav.style.boxShadow = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
