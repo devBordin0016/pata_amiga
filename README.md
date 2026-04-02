@@ -28,7 +28,7 @@ A **PataAmiga** é uma landing page demonstrativa de um sistema de adoção de a
 | Diego de Almeida Santos | 5° Semestre |
 | Isac Reinaldo dos Santos | 5° Semestre |
 | Bruno Lima Lemos | 5° Semestre |
-| Jose Comparotto | 7° Semestre |
+| Jose Augusto Comparotto Rodrigues | 8° Semestre |
 
 ## 🚀 Como executar localmente
 
